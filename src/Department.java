@@ -66,27 +66,19 @@ public class Department {
     }
 
     /**
-     * 해당 학과에 지원한 학생을 "확정"한다. 그리고 선호도 점수를 계산하여 반환한다.
-     * @return 선호도 점수
+     * 해당 학과에 지원한 학생을 "확정"하고 리스트로 만든다.
+     * @return 매칭된 학생 리스트
      */
-    public int match() {
-        int score = 0;
+    public List<Student> match() {
+        List<Student> matching = new LinkedList<>();
         for(Queue<Student> applyQueue : applyQueues) {
             while(!applyQueue.isEmpty()) {
-                // 1. 매칭
                 Student student = applyQueue.poll();
                 student.setMatchedDepartment(id);
-                // 2. 선호도 계산
-                for(int prefer = 0; prefer < student.getApplyCount(); prefer++) {
-                    String preferID = student.getPreferedDepartmentID(prefer);
-                    if(preferID.equals(id)) {
-                        score += Student.MAX_APPLY - prefer;
-                        break;
-                    }
-                }
+                matching.add(student);
             }
         }
-        return score;
+        return matching;
     }
 
     public boolean isFull() {
