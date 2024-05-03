@@ -2,7 +2,7 @@ import java.util.*;
 
 public class MatchingManager {
 
-    private Map<String, Student> matching;
+    private List<Student> matching;
     private Queue<Student> nonMatching;
     
     private DepartmentManager departmentManager;
@@ -13,7 +13,7 @@ public class MatchingManager {
         nonMatching = new LinkedList<>();
         nonMatching.addAll(students);
 
-        matching = new HashMap<>();
+        matching = new LinkedList<>();
         departmentManager = new DepartmentManager(departments);
     }
     
@@ -50,13 +50,13 @@ public class MatchingManager {
     private void preferMatching(Student student, int preferNumber) {
         Department prefer = departmentManager.findByID(student.getPreferedDepartmentID(preferNumber));
         if(prefer.apply(student, preferNumber)) {
-            matching.put(student.getStudentID(), student);
+            matching.add(student);
         } else {
             Student swapped = prefer.swap(student, preferNumber);
             nonMatching.add(swapped);
             if(!swapped.getStudentID().equals(student.getStudentID())) { // swap
-                matching.remove(swapped.getStudentID());
-                matching.put(student.getStudentID(), student);
+                matching.remove(swapped);
+                matching.add(student);
             }
         }
     }
@@ -67,19 +67,12 @@ public class MatchingManager {
             return false; 
         }
         random.apply(student, preferNumber);
-        matching.put(student.getStudentID(), student);
+        matching.add(student);
         return true;
     }
 
     private List<Student> finishMatching() {
         totalPreference = departmentManager.finishMatching();
-        
-        List<Student> students = new LinkedList<>();
-        for(int i = 1; i <= matching.size(); i++) {
-            Student matched = matching.get(Integer.toString(i));
-            students.add(matched);
-        }
-        
-        return students;
+        return matching;
     }
 }
