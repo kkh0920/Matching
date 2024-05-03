@@ -23,7 +23,7 @@ public class App {
 
     public static final int DEPARTMENT = 25;
     
-    public static final int DEPARTMENT_CAPACITY = 30;
+    public static final int DEPARTMENT_CAPACITY = 40;
 
     public static void main(String[] args) {
         List<Department> departments = new LinkedList<>();
