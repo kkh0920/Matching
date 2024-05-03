@@ -28,7 +28,7 @@ public class MatchingManager {
             Student student = nonMatching.poll();
             int preferNumber = student.fetchPrefer();
             if(preferNumber == student.getApplyCount()) { // n지망까지 모두 떨어졌을 때?
-                if(!randomMatching(student, preferNumber)) { 
+                if(!randomMatching(student)) { 
                     return finishMatching(); // 랜덤 매칭이 실패하면(==모든 학과의 정원이 마감되면), 매칭을 끝낸다.
                 }
                 continue;
@@ -60,12 +60,12 @@ public class MatchingManager {
         }
     }
 
-    private boolean randomMatching(Student student, int preferNumber) {
+    private boolean randomMatching(Student student) {
         Department random = departmentManager.getAnything();
         if(random == null) {
             return false; 
         }
-        random.apply(student, preferNumber);
+        random.apply(student, Student.MAX_APPLY);
         matching.add(student);
         return true;
     }
