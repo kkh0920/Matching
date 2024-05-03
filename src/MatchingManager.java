@@ -30,9 +30,9 @@ public class MatchingManager {
         while(!nonMatching.isEmpty()) {
             Student student = nonMatching.poll();
             int preferNumber = student.fetchPrefer();
-            if(preferNumber == student.getApplyCount()) { // n지망까지 모두 떨어졌을 때?
+            if(preferNumber == student.getApplyCount()) { // n지망까지 모두 떨어졌을 때,
                 if(!randomMatching(student)) {
-                    impossibleMatching.add(student); // 모든 학과의 정원이 마감 (==매칭이 불가능한 학생)
+                    impossibleMatching.add(student); // 모든 학과의 정원이 마감인 경우 (== 매칭이 불가능한 학생)
                 }
                 continue;
             }
