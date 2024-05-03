@@ -2,7 +2,10 @@ import java.util.*;
 
 public class MatchingManager {
 
-    private List<Student> matching;
+    private List<Student> matched;
+
+    private List<Student> impossibleMatching;
+
     private Queue<Student> nonMatching;
     
     private DepartmentManager departmentManager;
@@ -10,10 +13,10 @@ public class MatchingManager {
     private int totalPreference = -1;
 
     public MatchingManager(List<Student> students, List<Department> departments) {
+        impossibleMatching = new LinkedList<>();
+        matched = new LinkedList<>();
         nonMatching = new LinkedList<>();
         nonMatching.addAll(students);
-
-        matching = new LinkedList<>();
         departmentManager = new DepartmentManager(departments);
     }
     
@@ -28,8 +31,8 @@ public class MatchingManager {
             Student student = nonMatching.poll();
             int preferNumber = student.fetchPrefer();
             if(preferNumber == student.getApplyCount()) { // n지망까지 모두 떨어졌을 때?
-                if(!randomMatching(student)) { 
-                    return finishMatching(); // 랜덤 매칭이 실패하면(==모든 학과의 정원이 마감되면), 매칭을 끝낸다.
+                if(!randomMatching(student)) {
+                    impossibleMatching.add(student); // 모든 학과의 정원이 마감 (==매칭이 불가능한 학생)
                 }
                 continue;
             }
@@ -48,15 +51,9 @@ public class MatchingManager {
 
     private void preferMatching(Student student, int preferNumber) {
         Department prefer = departmentManager.findByID(student.getPreferedDepartmentID(preferNumber));
-        if(prefer.apply(student, preferNumber)) {
-            matching.add(student);
-        } else {
+        if(!prefer.apply(student, preferNumber)) {
             Student swapped = prefer.swap(student, preferNumber);
             nonMatching.add(swapped);
-            if(!swapped.getStudentID().equals(student.getStudentID())) { // swap
-                matching.remove(swapped);
-                matching.add(student);
-            }
         }
     }
 
@@ -66,12 +63,24 @@ public class MatchingManager {
             return false; 
         }
         random.apply(student, Student.MAX_APPLY);
-        matching.add(student);
         return true;
     }
 
     private List<Student> finishMatching() {
-        totalPreference = departmentManager.finishMatching();
-        return matching;
+        matched.addAll(departmentManager.finishMatching());
+        calculateTotalPreference();
+        return matched;
+    }
+
+    private void calculateTotalPreference() {
+        for(Student match : matched) {   
+            for(int prefer = 0; prefer < match.getApplyCount(); prefer++) {
+                String preferID = match.getPreferedDepartmentID(prefer);
+                if(preferID.equals(match.getMatchedDepartment())) {
+                    totalPreference += Student.MAX_APPLY - prefer;
+                    break;
+                }
+            }
+        }
     }
 }
