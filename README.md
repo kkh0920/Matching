@@ -1,4 +1,4 @@
-# Matching Algorithm
+## Matching Algorithm
 - 학생 - 학과 매칭
 - 비 선호 학과 및 학과 정원이 가변적인 경우에 대한 고려 필요
 
