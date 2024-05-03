@@ -2,16 +2,17 @@ import java.util.*;
 
 public class Department {
 
-    public static int capacity = 40;
-
     private String id;
 
     private int applicants = 0;
 
+    private int capacity;
+
     private List<Queue<Student>> applyQueues;
 
-    public Department(String id) {
+    public Department(String id, int capacity) {
         this.id = id;
+        this.capacity = capacity;
         applyQueues = new LinkedList<>();
         for(int i = 0; i < Student.MAX_APPLY + 1; i++) { // [n지망 지원 큐] + [n지망 모두 떨어진 학생 지원 큐]
             applyQueues.add(new PriorityQueue<>());
@@ -92,7 +93,11 @@ public class Department {
         return applicants >= capacity;
     }
 
-    public static int getCapacity() {
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public int getCapacity() {
         return capacity;
     }
 

@@ -22,9 +22,8 @@ public class MatchingManager {
      * @param capacity 학과 정원
      * @return <학번(키), 학생(값)>으로 이루어진 매칭 결과
      */
-    public List<Student> matching(int capacity) {
+    public List<Student> matching() {
         totalPreference = 0;
-        Department.capacity = capacity;
         while(!nonMatching.isEmpty()) {
             Student student = nonMatching.poll();
             int preferNumber = student.fetchPrefer();
