@@ -53,12 +53,11 @@ public class DepartmentManager {
         return true;
     }
 
-    public int finishMatching() {
-        int score = 0;
+    public List<Student> finishMatching() {
+        List<Student> matching = new LinkedList<>();
         for(Department department : departments) {
-            score += department.match();
-            // System.out.println("학과" + department.getId() + " 인원 : " + department.getApplicants());
+            matching.addAll(department.match());
         }
-        return score;
+        return matching;
     }
 }
