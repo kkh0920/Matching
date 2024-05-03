@@ -63,9 +63,9 @@ public class App {
         }
     }
 
-    public static void printOrderByGrade(List<Student> students) {
-        Collections.sort(students);
-        for(Student student : students) {
+    public static void printOrderByGrade(List<Student> matchedStudent) {
+        Collections.sort(matchedStudent);
+        for(Student student : matchedStudent) {
             System.out.println("학생" + student.getStudentID() + 
                                 " (성적 : " + student.getGrade() + 
                                 " / 학과 : " + student.getMatchedDepartment() + ")");
