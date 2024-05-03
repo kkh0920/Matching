@@ -19,15 +19,21 @@ public class App {
      *      -> 최소 70%, 최대 130%
      */
 
+    public static final int STUDENT = 1000;
+
+    public static final int DEPARTMENT = 25;
+    
+    public static final int DEPARTMENT_CAPACITY = 30;
+
     public static void main(String[] args) {
         List<Department> departments = new LinkedList<>();
-        addDepartments(departments, 25);
+        addDepartments(departments, DEPARTMENT);
 
         List<Student> students = new LinkedList<>();
-        addRandomStudents(students, departments, 1000);
+        addRandomStudents(students, departments, STUDENT);
 
         MatchingManager matcher = new MatchingManager(students, departments);
-        List<Student> matchedStudent = matcher.matching(40);
+        List<Student> matchedStudent = matcher.matching();
 
         printOrderByGrade(matchedStudent);
         
@@ -58,7 +64,7 @@ public class App {
 
     public static void addDepartments(List<Department> departments, int departmentCount) {
         for(int i = 1; i <= departmentCount; i++) {
-            Department department = new Department(Integer.toString(i));
+            Department department = new Department(Integer.toString(i), DEPARTMENT_CAPACITY);
             departments.add(department);
         }
     }
