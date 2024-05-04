@@ -2,12 +2,11 @@ import java.util.*;
 
 public class MatchingManager {
 
+    private Queue<Student> nonMatching;
+    private List<Student> impossibleMatching;
+    
     private List<Student> matched;
 
-    private List<Student> impossibleMatching;
-
-    private Queue<Student> nonMatching;
-    
     private DepartmentManager departmentManager;
 
     private int totalPreference = -1;
@@ -23,20 +22,18 @@ public class MatchingManager {
     /**
      * 학생 - 학과 매칭을 수행하고, 매칭된 결과를 반환한다.
      * @param capacity 학과 정원
-     * @return <학번(키), 학생(값)>으로 이루어진 매칭 결과
+     * @return 학과에 매칭된 학생 리스트
      */
     public List<Student> matching() {
         totalPreference = 0;
         while(!nonMatching.isEmpty()) {
             Student student = nonMatching.poll();
             int preferNumber = student.fetchPrefer();
-            if(preferNumber == student.getApplyCount()) { // n지망까지 모두 떨어졌을 때,
-                if(!randomMatching(student)) {
-                    impossibleMatching.add(student); // 모든 학과의 정원이 마감인 경우 (== 매칭이 불가능한 학생)
-                }
-                continue;
+            if(preferNumber < student.getApplyCount()) { 
+                preferMatching(student, preferNumber);
+            } else if(!randomMatching(student)) { // n지망까지 모두 떨어졌을 때, 랜덤 매칭
+                impossibleMatching.add(student); // 모든 학과의 정원이 마감인 경우 (== 매칭이 불가능한 학생)
             }
-            preferMatching(student, preferNumber);
         }
         return finishMatching();
     }
