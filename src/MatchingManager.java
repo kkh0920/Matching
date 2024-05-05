@@ -25,16 +25,19 @@ public class MatchingManager {
      * @return 학과에 매칭된 학생 리스트
      */
     public List<Student> matching() {
+        if(totalPreference > -1) {
+            return matched;
+        }
         totalPreference = 0;
         while(!nonMatching.isEmpty()) {
             Student student = nonMatching.poll();
             int preferNumber = student.fetchPrefer();
             if(preferNumber < student.getApplyCount()) { 
                 preferMatching(student, preferNumber);
-            } else if(!randomMatching(student)) { // n지망까지 모두 떨어졌을 때, 랜덤 매칭
-                impossibleMatching.add(student); // 모든 학과의 정원이 마감인 경우 (== 매칭이 불가능한 학생)
+            } else { // n지망까지 모두 떨어졌을 때, 랜덤 매칭
+                randomMatching(student); 
             }
-        }
+        } 
         return finishMatching();
     }
 
@@ -54,13 +57,13 @@ public class MatchingManager {
         }
     }
 
-    private boolean randomMatching(Student student) {
+    private void randomMatching(Student student) {
         Department random = departmentManager.getAnything();
-        if(random == null) {
-            return false; 
+        if(random != null) { 
+            random.apply(student, Student.MAX_APPLY);
+        } else { // 모든 학과의 정원이 마감인 경우 (== 매칭이 불가능한 학생)
+            impossibleMatching.add(student); 
         }
-        random.apply(student, Student.MAX_APPLY);
-        return true;
     }
 
     private List<Student> finishMatching() {
