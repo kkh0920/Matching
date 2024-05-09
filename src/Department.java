@@ -8,11 +8,15 @@ public class Department {
 
     private int capacity;
 
+    private double maxCapacityRate = 1.0f;
+
     private List<Queue<Student>> applyQueues;
 
     public Department(String id, int capacity) {
         this.id = id;
+        this.applicants = 0;
         this.capacity = capacity;
+        this.maxCapacityRate = 1.0f;
         applyQueues = new LinkedList<>();
         for(int i = 0; i < Student.MAX_APPLY + 1; i++) { // [n지망 지원 큐] + [n지망 모두 떨어진 학생 지원 큐]
             applyQueues.add(new PriorityQueue<>());
@@ -26,7 +30,7 @@ public class Department {
      * @return 정원이 모두 채워졌으면 false, 아니면 true 반환
      */
     public boolean apply(Student student, int preferNumber) {
-        if(applicants == capacity) {
+        if(applicants >= capacity * maxCapacityRate) {
             return false;
         }
         applyQueues.get(preferNumber).add(student);
@@ -44,18 +48,17 @@ public class Department {
         Queue<Student> applyQueue = applyQueues.get(preferNumber);
         // 1. 낮은 지망으로 지원한 학생과 교체
         for(int i = Student.MAX_APPLY; i > preferNumber; i--) {
-            Queue<Student> queue = applyQueues.get(i);
-            if(!queue.isEmpty()) {
+            Student swappedStudent = popStudent(i);
+            if(swappedStudent != null) {
                 applyQueue.add(student);
-                return queue.poll();
+                applicants++;
+                return swappedStudent;
             }
         }
-
         // 2. 낮은 지망이 없다면, 같은 지망으로 지원한 학생 중 성적 비교 후 교체
         if(applyQueue.isEmpty()) {
             return student;
         }
-    
         Student swap = applyQueue.peek();
         if(swap.getGrade() < student.getGrade()) { // 성적이 같은 경우는 어떻게 해야할까?
             applyQueue.add(student);
@@ -81,8 +84,25 @@ public class Department {
         return matching;
     }
 
+    /**
+     * [prefer] 순위로 지원한 학생 중, 가장 낮은 학점을 가진 학생을 반환한다.
+     * @param prefer 지원 순위
+     * @return 반환된 학생
+     */
+    public Student popStudent(int prefer) {
+        Queue<Student> preferQueue = applyQueues.get(prefer);
+        if(preferQueue.isEmpty())
+            return null;
+        applicants--;
+        return preferQueue.poll();
+    }
+
     public boolean isFull() {
-        return applicants >= capacity;
+        return applicants >= capacity * maxCapacityRate;
+    }
+
+    public void setMaxCapacityRate(double maxCapacityRate) {
+        this.maxCapacityRate = maxCapacityRate;
     }
 
     public void setCapacity(int capacity) {

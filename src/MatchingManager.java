@@ -11,20 +11,27 @@ public class MatchingManager {
 
     private int totalPreference = -1;
 
+    private List<Department> upperCapacity;
+    private Queue<Department> lowerCapacity;
+
     public MatchingManager(List<Student> students, List<Department> departments) {
-        impossibleMatching = new LinkedList<>();
-        matched = new LinkedList<>();
         nonMatching = new LinkedList<>();
         nonMatching.addAll(students);
+        impossibleMatching = new LinkedList<>();
+        matched = new LinkedList<>();
+        
+        upperCapacity = new LinkedList<>();
+        lowerCapacity = new LinkedList<>();
+        
         departmentManager = new DepartmentManager(departments);
     }
     
     /**
      * 학생 - 학과 매칭을 수행하고, 매칭된 결과를 반환한다.
-     * @param capacity 학과 정원
+     * @param min 학과 별 최소 충족 인원 비율 
      * @return 학과에 매칭된 학생 리스트
      */
-    public List<Student> matching() {
+    public List<Student> matching(double min) {
         if(totalPreference > -1) {
             return matched;
         }
@@ -38,6 +45,7 @@ public class MatchingManager {
                 randomMatching(student); 
             }
         } 
+        divide(min);
         return finishMatching();
     }
 
@@ -64,6 +72,36 @@ public class MatchingManager {
         } else { // 모든 학과의 정원이 마감인 경우 (== 매칭이 불가능한 학생)
             impossibleMatching.add(student); 
         }
+    }
+
+    private void divide(double min) {
+        upperCapacity.addAll(departmentManager.getUpperCapacity(min)); // > capacity * min
+        lowerCapacity.addAll(departmentManager.getLowerCapacity(min)); // < capacity * min
+        for(int prefer = Student.MAX_APPLY; prefer >= 0; prefer--) {
+            for(Department before : upperCapacity) {
+                if(!moveStudent(before, prefer, min)) {
+                    return;
+                }
+            }
+        }
+    }
+
+    private boolean moveStudent(Department before, int prefer, double min) {
+        while(before.getCapacity() > before.getCapacity() * min) {
+            if(lowerCapacity.isEmpty()) {
+                return false;
+            }
+            Department after = lowerCapacity.peek();
+            Student moved = before.popStudent(prefer);
+            if(moved == null) {
+                break;
+            }
+            after.apply(moved, Student.MAX_APPLY);
+            if(after.getApplicants() >= after.getCapacity() * min) {
+                lowerCapacity.poll();
+            }
+        }
+        return true;
     }
 
     private List<Student> finishMatching() {
