@@ -25,10 +25,6 @@ public class MatchingTester {
     
     public static final int DEPARTMENT_CAPACITY = 40;
 
-    public static final double MIN_CAPACITY_RATE = 0.7f;
-
-    public static final double MAX_CAPACITY_RATE = 1.3f;
-
     public static void main(String[] args) {
         List<Department> departments = new LinkedList<>();
         addDepartments(departments, DEPARTMENT);
@@ -37,7 +33,7 @@ public class MatchingTester {
         addRandomStudents(students, departments, STUDENT);
 
         MatchingManager matcher = new MatchingManager(students, departments);
-        List<Student> matchedStudent = matcher.matching(MIN_CAPACITY_RATE);
+        List<Student> matchedStudent = matcher.matching(0.7f, 1.3f);
 
         // printOrderByGrade(matchedStudent);
         
@@ -69,7 +65,6 @@ public class MatchingTester {
     public static void addDepartments(List<Department> departments, int departmentCount) {
         for(int i = 1; i <= departmentCount; i++) {
             Department department = new Department(Integer.toString(i), DEPARTMENT_CAPACITY);
-            department.setMaxCapacityRate(MAX_CAPACITY_RATE);
             departments.add(department);
         }
     }

@@ -29,13 +29,15 @@ public class MatchingManager {
     /**
      * 학생 - 학과 매칭을 수행하고, 매칭된 결과를 반환한다.
      * @param min 학과 별 최소 충족 인원 비율 
+     * @param max 학과 별 최대 충족 인원 비율 
      * @return 학과에 매칭된 학생 리스트
      */
-    public List<Student> matching(double min) {
+    public List<Student> matching(double min, double max) {
         if(totalPreference > -1) {
             return matched;
         }
         totalPreference = 0;
+        departmentManager.setMaxCapacityRate(max);
         while(!nonMatching.isEmpty()) {
             Student student = nonMatching.poll();
             int preferNumber = student.fetchPrefer();
@@ -47,6 +49,10 @@ public class MatchingManager {
         } 
         divide(min);
         return finishMatching();
+    }
+
+    public List<Student> matching() {
+        return matching(1.0f, 1.0f);
     }
 
     /**

@@ -26,6 +26,12 @@ public class DepartmentManager {
         return null;
     }
 
+    public void setMaxCapacityRate(double rate) {
+        for(Department department : departments) {
+            department.setMaxCapacityRate(rate);
+        }
+    }
+
     public Department getAnything() { 
         if(isAllFull())
             return null;
