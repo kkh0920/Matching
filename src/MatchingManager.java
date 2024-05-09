@@ -93,7 +93,7 @@ public class MatchingManager {
     }
 
     private boolean moveStudent(Department before, int prefer, double min) {
-        while(before.getCapacity() > before.getCapacity() * min) {
+        while(before.getApplicants() > before.getCapacity() * min) {
             if(lowerCapacity.isEmpty()) {
                 return false;
             }

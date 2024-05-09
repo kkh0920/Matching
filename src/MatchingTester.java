@@ -37,7 +37,7 @@ public class MatchingTester {
 
         // printOrderByGrade(matchedStudent);
         
-        System.out.println("매칭된 총 인원 : " + matchedStudent.size());
+        System.out.println("매칭된 총 인원 : " + matchedStudent.size() + " / " + STUDENT);
         System.out.println("선호도 점수 총합 : " + matcher.getTotalPreference() + " / " + Student.MAX_APPLY * STUDENT);
     }
 
