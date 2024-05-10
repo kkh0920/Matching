@@ -20,8 +20,8 @@ public class Student implements Comparable<Student> {
         nonPreferred = new LinkedList<>();
         studentID = id;
         grade = 0;
+        matchingCounter = 0;
         matchedDepartment = null;
-        resetCounter();
     }
 
     /**
@@ -56,8 +56,9 @@ public class Student implements Comparable<Student> {
         return matchingCounter < getApplyCount() ? matchingCounter++ : matchingCounter;
     }
 
-    public void resetCounter() {
+    public void resetMatching() {
         matchingCounter = 0;
+        matchedDepartment = null;
     }    
 
     public String getPreferedDepartmentID(int prefer) {
