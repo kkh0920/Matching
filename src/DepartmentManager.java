@@ -26,6 +26,12 @@ public class DepartmentManager {
         return null;
     }
 
+    public void resetMatching() {
+        for(Department department : departments) {
+            department.resetMatching();
+        }
+    }
+
     public void setMaxCapacityRate(double rate) {
         for(Department department : departments) {
             department.setMaxCapacityRate(rate);

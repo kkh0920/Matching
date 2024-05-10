@@ -19,10 +19,6 @@ public class MatchingManager {
         nonMatching.addAll(students);
         impossibleMatching = new LinkedList<>();
         matched = new LinkedList<>();
-        
-        upperCapacity = new LinkedList<>();
-        lowerCapacity = new LinkedList<>();
-        
         departmentManager = new DepartmentManager(departments);
     }
     
@@ -33,11 +29,7 @@ public class MatchingManager {
      * @return 학과에 매칭된 학생 리스트
      */
     public List<Student> matching(double min, double max) {
-        if(totalPreference > -1) {
-            return matched;
-        }
-        totalPreference = 0;
-        departmentManager.setMaxCapacityRate(max);
+        resetMatching(max);
         while(!nonMatching.isEmpty()) {
             Student student = nonMatching.poll();
             int preferNumber = student.fetchPrefer();
@@ -61,6 +53,25 @@ public class MatchingManager {
      */
     public int getTotalPreference() {
         return totalPreference;
+    }
+
+    private void resetMatching(double max) {
+        nonMatching.addAll(impossibleMatching);
+        nonMatching.addAll(matched);
+        impossibleMatching.clear();
+        matched.clear();
+
+        for(Student student : nonMatching) {
+            student.resetMatching();
+        }
+
+        departmentManager.resetMatching();
+        departmentManager.setMaxCapacityRate(max);
+
+        upperCapacity = new LinkedList<>();
+        lowerCapacity = new LinkedList<>();
+
+        totalPreference = 0;   
     }
 
     private void preferMatching(Student student, int preferNumber) {

@@ -33,10 +33,8 @@ public class MatchingTester {
         addRandomStudents(students, departments, STUDENT);
 
         MatchingManager matcher = new MatchingManager(students, departments);
-        List<Student> matchedStudent = matcher.matching(0.7f, 1.3f);
+        List<Student> matchedStudent = matcher.matching(0.7, 1.3);
 
-        // printOrderByGrade(matchedStudent);
-        
         System.out.println("매칭된 총 인원 : " + matchedStudent.size() + " / " + STUDENT);
         System.out.println("선호도 점수 총합 : " + matcher.getTotalPreference() + " / " + Student.MAX_APPLY * STUDENT);
     }
