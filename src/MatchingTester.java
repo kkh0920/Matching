@@ -1,7 +1,5 @@
 import java.util.*;
 
-public class App {
-
     /*
      * ---------------------------------------------------
      * 
@@ -19,6 +17,8 @@ public class App {
      *      -> 최소 70%, 최대 130%
      */
 
+public class MatchingTester {
+
     public static final int STUDENT = 1000;
 
     public static final int DEPARTMENT = 25;
@@ -26,19 +26,7 @@ public class App {
     public static final int DEPARTMENT_CAPACITY = 40;
 
     public static void main(String[] args) {
-        List<Department> departments = new LinkedList<>();
-        addDepartments(departments, DEPARTMENT);
-
-        List<Student> students = new LinkedList<>();
-        addRandomStudents(students, departments, STUDENT);
-
-        MatchingManager matcher = new MatchingManager(students, departments);
-        List<Student> matchedStudent = matcher.matching();
-
-        printOrderByGrade(matchedStudent);
-        
-        System.out.println("매칭된 총 인원 : " + matchedStudent.size());
-        System.out.println("선호도 점수 총합 : " + matcher.getTotalPreference());
+        matching();
     }
 
     public static void addRandomStudents(List<Student> students, List<Department> departments, int studentCount) {
@@ -75,6 +63,49 @@ public class App {
             System.out.println("학생" + student.getStudentID() + 
                                 " (성적 : " + student.getGrade() + 
                                 " / 학과 : " + student.getMatchedDepartment() + ")");
+        }
+    }
+
+    public static void matching() {
+        List<Department> departments = new LinkedList<>();
+        addDepartments(departments, DEPARTMENT);
+
+        List<Student> students = new LinkedList<>();
+        addRandomStudents(students, departments, STUDENT);
+
+        System.out.println();
+        System.out.println();
+        System.out.println("-------------------  Matching Result  -------------------");
+
+        MatchingManager matcher = new MatchingManager(students, departments);
+        List<Student> matchedStudent = matcher.matching(0.7, 1.3);
+        print(departments);
+        
+        System.out.println();
+        System.out.println();
+        System.out.print("            매칭된 총 인원");
+        System.out.printf("%16s", " : " + matchedStudent.size() + " / " + STUDENT);
+        System.out.println();
+        System.out.print("            선호도 점수 총합" );
+        System.out.printf("%13s", " : " + matcher.getTotalPreference() + " / " + Student.MAX_APPLY * STUDENT);
+        System.out.println();
+        System.out.println();
+        System.out.println("---------------------------------------------------------");
+        System.out.println();
+        System.out.println();
+    }
+
+    public static void print(List<Department> departments) {
+        int i = 0;
+        System.out.println();
+        for(Department department : departments) {
+            System.out.printf("%10s", "학과");
+            System.out.printf("%2s", department.getId());
+            System.out.printf("%10s", "(" + department.getApplicants() + " / " + department.getCapacity() + ")");
+            i++;
+            if(i % 2 == 0) {
+                System.out.println();
+            }
         }
     }
 }
