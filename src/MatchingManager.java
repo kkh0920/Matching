@@ -129,13 +129,7 @@ public class MatchingManager {
 
     private void calculateTotalPreference() {
         for(Student match : matched) {   
-            for(int prefer = 0; prefer < match.getApplyCount(); prefer++) {
-                String preferID = match.getPreferedDepartmentID(prefer);
-                if(preferID.equals(match.getMatchedDepartment())) {
-                    totalPreference += Student.MAX_APPLY - prefer;
-                    break;
-                }
-            }
+            totalPreference += match.getPreference();
         }
     }
 }

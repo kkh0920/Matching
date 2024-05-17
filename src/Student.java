@@ -81,6 +81,15 @@ public class Student implements Comparable<Student> {
         return preferred.size();
     }
 
+    public int getPreference() {
+        for(int prefer = 0; prefer < getApplyCount(); prefer++) {
+            if(preferred.get(prefer).equals(matchedDepartment)) { 
+                return Student.MAX_APPLY - prefer;
+            }
+        }
+        return 0;
+    }
+
     @Override
     public int compareTo(Student o) { // 학점이 높은 순으로 비교
         if(o.grade > this.grade)
