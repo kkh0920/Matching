@@ -90,15 +90,6 @@ public class DepartmentManager {
         for(Department department : departments) {
             matching.addAll(department.match());
         }
-        print();
         return matching;
-    }
-
-    public void print() {
-        for(Department department : departments) {
-            System.out.println("학과" + department.getId() + 
-                                " 인원 : " + department.getApplicants() + 
-                                    " / " + department.getCapacity());
-        }
     }
 }
