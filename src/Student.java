@@ -25,15 +25,22 @@ public class Student implements Comparable<Student> {
     }
 
     /**
-     * 선호 학과를 등록한다. 
+     * 선호 학과를 등록한다.
      * 학생의 선호도가 높은 학과부터 등록해야한다.
      * @param departmentId 선호 학과 ID
+     * @return 최대 지원 횟수를 넘겼거나, 이미 등록된 학과라면 false를 반환한다.
      */
-    public void addPreferred(String departmentId) {
+    public boolean addPreferred(String departmentId) {
         if(preferred.size() >= MAX_APPLY) {
-            return;
+            return false;
+        }
+        for(String prefer : preferred) {
+            if(prefer.equals(departmentId)) {
+                return false;
+            }
         }
         preferred.add(departmentId);
+        return true;
     }
     
     /**
