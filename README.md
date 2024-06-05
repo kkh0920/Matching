@@ -1,5 +1,9 @@
 # Matching Algorithm
 
+- [Usage](#usage)
+- [Methods](#methods)
+- [Reference](#reference)
+
 ## Usage
 
 #### Step 1
@@ -43,6 +47,33 @@ matcher.matching();
 // or
 matcher.matching( /* Min capacity rate */, /* Max capacity rate */ );
 ```
+
+## Methods
+
+**`MatchingManager`** methods:
+
+- **matching(min: double, max: dluble)**: 학과 정원의 최소 비율, 최대 비율에 맞게 매칭 수행
+
+- **matching()**: 학과 정원에 맞게 매칭 수행
+
+- **getTotalPreference()**: 매칭 후, 매칭된 학생들의 선호도 점수 총합을 반환
+
+
+**`Student`** methods:
+
+- **addPreferred(departmentId: String)**: 학생이 선호하는 학과를 등록 (**1지망, 2지망, 3지망 순으로 등록**해야함)
+
+- **setGrade(grade: double)**: 학생의 성적을 설정
+
+- **getMatchedDepartment()**: 매칭된 학과를 반환 (매칭되지 않았으면 null)
+
+- **getPreference()**: 학생 개인의 선호도를 반환
+  (1지망 매칭: 3점 / 2지망 매칭: 2점 / 3지망 매칭: 1점 / 그 외의 매칭 혹은 매칭되지 않은 상태 : 0점)
+
+
+**`Department`** methods:
+
+- **getApplicants()**: 매칭된 학생 수룰 반환
 
 ## Reference
 
