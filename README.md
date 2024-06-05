@@ -74,7 +74,7 @@ matcher.matching( /* Min capacity rate */, /* Max capacity rate */ );
 
 **`Department`** methods:
 
-- **getApplicants()**: 매칭된 학생 수룰 반환
+- **getApplicants()**: 매칭된 학생 수를 반환
 
 ## Reference
 
