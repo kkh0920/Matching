@@ -1,8 +1,44 @@
 ## Matching Algorithm
 
-- 학생 - 학과 매칭
+- 학생 - 학과 매칭 알고리즘
 
-- 비 선호 학과 및 학과 정원이 가변적인 경우에 대한 고려 필요
+## Usage
+
+#### 학생 리스트 생성
+```java
+List<Student> studentList = new LinkedList<>();
+for(int i = 0; i < /* Number of student */ ; i++) {
+    Student student = new Student( /* student id */ );
+    
+    student.setGrade( /* grade */ );
+
+    student.addPrefered( /* 1st Department */ );
+    student.addPrefered( /* 2st Department */ );
+    student.addPrefered( /* 3st Department */ );
+
+    studentList.add(student);
+}
+```
+
+#### 학과 리스트 생성
+```java
+List<Department> departmentList = new LinkedList<>();
+for(int i = 0; i < /* Number of department */; i++) {
+    Department department = new Department( /* deparment id */, /* capacity */ );
+
+    departmentList.add(department);
+}
+```
+
+#### MatchingManager 객체 생성
+```java
+MatchingManager matcher = new MatchingManager(studentList, departmentList);
+```
+
+#### 매칭 시작
+```java
+matcher.matching();
+```
 
 ## Reference
 
