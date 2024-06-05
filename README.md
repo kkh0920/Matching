@@ -52,7 +52,7 @@ matcher.matching( /* Min capacity rate */, /* Max capacity rate */ );
 
 **`MatchingManager`** methods:
 
-- **matching(min: double, max: dluble)**: 학과 정원의 최소 비율, 최대 비율에 맞게 매칭 수행
+- **matching(min: double, max: double)**: 학과 정원의 최소 비율, 최대 비율에 맞게 매칭 수행
 
 - **matching()**: 학과 정원에 맞게 매칭 수행
 
@@ -68,7 +68,8 @@ matcher.matching( /* Min capacity rate */, /* Max capacity rate */ );
 - **getMatchedDepartment()**: 매칭된 학과를 반환 (매칭되지 않았으면 null)
 
 - **getPreference()**: 학생 개인의 선호도를 반환
-  (1지망 매칭: 3점 / 2지망 매칭: 2점 / 3지망 매칭: 1점 / 그 외의 매칭 혹은 매칭되지 않은 상태 : 0점)
+  
+   (1지망 매칭: 3점 / 2지망 매칭: 2점 / 3지망 매칭: 1점 / 그 외의 매칭 혹은 매칭되지 않은 상태 : 0점)
 
 
 **`Department`** methods:
