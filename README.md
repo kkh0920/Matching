@@ -18,8 +18,8 @@ for(int i = 0; i < /* Number of student */ ; i++) {
     student.setGrade( /* grade */ );
 
     student.addPrefered( /* 1st Department */ );
-    student.addPrefered( /* 2st Department */ );
-    student.addPrefered( /* 3st Department */ );
+    student.addPrefered( /* 2nd Department */ );
+    student.addPrefered( /* 3rd Department */ );
 
     studentList.add(student);
 }
