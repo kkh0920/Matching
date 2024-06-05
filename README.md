@@ -1,10 +1,9 @@
-## Matching Algorithm
-
-- 학생 - 학과 매칭 알고리즘
+# Matching Algorithm
 
 ## Usage
 
-#### 학생 리스트 생성
+#### Step 1
+**`Student List`** 생성
 ```java
 List<Student> studentList = new LinkedList<>();
 for(int i = 0; i < /* Number of student */ ; i++) {
@@ -20,7 +19,8 @@ for(int i = 0; i < /* Number of student */ ; i++) {
 }
 ```
 
-#### 학과 리스트 생성
+#### Step 2
+**`Department List`** 생성
 ```java
 List<Department> departmentList = new LinkedList<>();
 for(int i = 0; i < /* Number of department */; i++) {
@@ -30,14 +30,18 @@ for(int i = 0; i < /* Number of department */; i++) {
 }
 ```
 
-#### MatchingManager 객체 생성
+#### Step 3
+**`MatchingManager`** 객체 생성
 ```java
 MatchingManager matcher = new MatchingManager(studentList, departmentList);
 ```
 
-#### 매칭 시작
+#### Step 4
+**`matching()`**
 ```java
 matcher.matching();
+// or
+matcher.matching( /* Min capacity rate */, /* Max capacity rate */ );
 ```
 
 ## Reference
