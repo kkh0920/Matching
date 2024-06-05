@@ -25,20 +25,33 @@ public class MatchingTester {
     
     public static final int DEPARTMENT_CAPACITY = 40;
 
-    public static final int[] APPLICANTS = { 45, 28, 35, 46, 39, 20, 63, 20, 37, 20, 
-                                            12, 31, 26, 36, 14, 25, 23, 37, 145, 103,
-                                            33, 48, 33, 31, 50 }; // 각 학과 별 지원 현황                     
+    public static final int[] APPLICANTS = { 47, 42, 44, 45, 33, 21, 49, 17, 27, 35, 
+                                            30, 28, 31, 36, 12, 20, 18, 29, 89, 100,
+                                            30, 73, 39, 42, 63 }; // 각 학과 별 지원 현황   
+         
 
     public static void main(String[] args) {
         List<Department> departments = new LinkedList<>();
         List<Student> students = new LinkedList<>();
-        
+        // for(int i = 0; i < 1000; i++) {
+        //     departments.clear();
+        //     students.clear();
+
+        //     addDepartments(departments, DEPARTMENT);
+        //     addStudents(students, departments, STUDENT);
+
+        //     MatchingManager matcher = new MatchingManager(students, departments);
+        //     List<Student> matchedStudent = matcher.matching(0.7, 1.3); // matching
+
+        //     System.out.println(matcher.getTotalPreference());
+        // }
+
         addDepartments(departments, DEPARTMENT);
-        addRandomStudents(students, departments, STUDENT);
+        addStudents(students, departments, STUDENT);
 
         MatchingManager matcher = new MatchingManager(students, departments);
         List<Student> matchedStudent = matcher.matching(0.7, 1.3); // matching
-
+        
         print(matcher, matchedStudent, departments);
     }
 
@@ -59,14 +72,19 @@ public class MatchingTester {
         System.out.print("\n            선호도 점수 총합" );
         System.out.printf("%13s", " : " + matcher.getTotalPreference() + " / " + Student.MAX_APPLY * STUDENT);
         System.out.println("\n\n---------------------------------------------------------\n\n");
-
     }
 
-    public static void addRandomStudents(List<Student> students, List<Department> departments, int studentCount) {
-        int remain = DEPARTMENT;      
+    public static void addStudents(List<Student> students, List<Department> departments, int studentCount) {
+        int remain = 0;      
+
+        int[] applicants = new int[DEPARTMENT];
         for(int i = 0; i < DEPARTMENT; i++) {
-            APPLICANTS[i] *= Student.MAX_APPLY; // 3회 지원
+            applicants[i] = APPLICANTS[i] * Student.MAX_APPLY; // 3회 지원
+            if(applicants[i] > 0) {
+                remain++;
+            }
         }
+
         Random random = new Random();
         for(int i = 1; i <= studentCount; i++) {
             Student student = new Student(Integer.toString(i));
@@ -75,7 +93,7 @@ public class MatchingTester {
             double grade = random.nextInt(46) / 10.0; 
             student.setGrade(Math.round(grade * 100) / 100.0);
             
-            // 랜덤 학과 지원
+            // 정해진 비율 학과 지원
             int apply = remain > 3 ? 3 : remain;
             for(int j = 0; j < apply; j++) {
                 int randomIndex;
@@ -83,13 +101,23 @@ public class MatchingTester {
                 do {
                     randomIndex = random.nextInt(departments.size());
                     preferDepartment = departments.get(randomIndex).getId();
-                } while(APPLICANTS[randomIndex] <= 0 ||
+                } while(applicants[randomIndex] <= 0 ||
                             !student.addPreferred(preferDepartment)); // 학과 중복 등록 방지
 
-                if((--APPLICANTS[randomIndex]) == 0) {
+                if((--applicants[randomIndex]) == 0) {
                     remain--;
                 }
             }
+
+            // 랜덤 학과 지원
+            // for(int j = 0; j < Student.MAX_APPLY; j++) {
+            //     int randomIndex;
+            //     String preferDepartment;
+            //     do {
+            //         randomIndex = random.nextInt(departments.size());
+            //         preferDepartment = departments.get(randomIndex).getId();
+            //     } while(!student.addPreferred(preferDepartment));
+            // }
             
             students.add(student);
         }
