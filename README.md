@@ -12,6 +12,7 @@
 **`Student List`** 생성
 ```java
 List<Student> studentList = new LinkedList<>();
+
 for(int i = 0; i < /* Number of student */ ; i++) {
     Student student = new Student( /* student id */ );
     
@@ -29,6 +30,7 @@ for(int i = 0; i < /* Number of student */ ; i++) {
 **`Department List`** 생성
 ```java
 List<Department> departmentList = new LinkedList<>();
+
 for(int i = 0; i < /* Number of department */; i++) {
     Department department = new Department( /* deparment id */, /* capacity */ );
 
